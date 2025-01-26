@@ -14,18 +14,10 @@
 
         <div class="flex flex-col p-2 pl-5 pt-6">
             <h1 class="text-4xl text-amber-400">Agne Skripkaite</h1>
-            <p class="text-lg text-stone-200 pt-3">gamedev adventures</p>
+            <p class="text-lg text-stone-200 pt-3">{{ "Gamedev adventures" | downcase }}</p>
         </div>
 
-        <div class="pl-5 pr-5 pb-2 pt-4 max-w-125">
-    <nav>
-        <ul class="flex flex-row justify-between items-center overflow-hidden font-sans text-stone-200">
-            <li><a href="/"  class="text-amber-400" >Home</a></li>
-            <li><a href="/UnrealEngineNotes.html" >Unreal Engine Notes</a></li>
-            <li><a href="#" class="text-stone-200">How I Made This Website</a></li>
-        </ul>
-    </nav>
-</div>
+        {% include navigation.html %}
         <!-- <div class="pl-5 pr-5 pb-2 pt-4 max-w-125">
             <nav>
                 <ul class="flex flex-row justify-between items-center overflow-hidden font-sans">
@@ -40,7 +32,7 @@
 </header>
 
 <body class="bg-stone-900">
-    <h1>This is the homepage!</h1>
+    {{ content }}
 </body>
 
 </html>
