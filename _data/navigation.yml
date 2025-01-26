@@ -1,0 +1,6 @@
+- name: Home
+  link: /
+- name: UENotes
+  link: /UENotes.html
+- name: Specs
+  link: /Specs.html
