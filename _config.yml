@@ -1,5 +1,16 @@
-plugins:
-  - jekyll-postcss-v2
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "" # the subpath of your site, e.g. /blog
+title: "Agne Skripkaite" # the name of your site, e.g. ACME Corp.
 
-postcss:
-  cache: false
+plugins:
+  - jekyll-tailwind
+  - jekyll-heroicons
+
+tailwind:
+  input: "assets/css/app.css"
+  minify: true
+
+heroicons:
+  variant: "solid"
+  default_class:
+    { solid: "size-6", outline: "size-6", mini: "size-5", micro: "size-4" }

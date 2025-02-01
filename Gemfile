@@ -1,9 +1,12 @@
-# frozen_string_literal: true
+source 'https://rubygems.org'
 
-source "https://rubygems.org"
+gem 'jekyll'
+gem 'webrick'
+gem 'csv'
+gem 'base64'
+gem 'tailwindcss-ruby', '>=4'
 
-# gem "rails"
-
-gem "jekyll", "~> 4.3"
-gem "webrick"
-gem "jekyll-postcss-v2"
+group :jekyll_plugins do
+  gem 'jekyll-heroicons'
+  gem 'jekyll-tailwind'
+end
