@@ -2,7 +2,7 @@
     <nav>
         <ul class="flex flex-row justify-left items-center overflow-hidden text-xl text-maintextcolor">
             {% for item in site.data.navigation %}
-                <li class="pr-25"><a href="{{ item.link }}" class="{% if page.url == item.link %} text-contrastcolor underline underline-offset-4 {% endif %} hover:text-contrastcolor">{{ item.name }}</a></li>
+                <li class="pr-25"><a href="{{ item.link }}" class="{% if page.url == item.link %} text-contrastcolor underline underline-offset-4 {% endif %} hover:text-focustextcolor">{{ item.name }}</a></li>
             {% endfor %}
         </ul>
     </nav>
