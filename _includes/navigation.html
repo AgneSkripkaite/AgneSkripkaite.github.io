@@ -1,9 +1,9 @@
-<div class="pl-5 pr-5 pb-2 pt-4 max-w-125">
+<div class="pl-5 pr-5 pb-3 pt-3 max-w-4xl">
     <nav>
-        <ul class="flex flex-row justify-between items-center overflow-hidden font-sans text-stone-200">
+        <ul class="flex flex-row justify-left items-center overflow-hidden base-text-color">
             {% for item in site.data.navigation %}
-                <li><a href="{{ item.link }}" {% if page.url == item.link %} class="text-amber-400" {% endif %}>{{ item.name }}</a></li>
+                <li class="pr-25"><a href="{{ item.link }}" class="{% if page.url == item.link %} contrast-text-color underline underline-offset-4 {% endif %} hover-change-color">{{ item.name }}</a></li>
             {% endfor %}
         </ul>
     </nav>
-</div>
+</div> 

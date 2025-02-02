@@ -1,1 +1,25 @@
 @import "tailwindcss";
+
+.background-color{
+    @apply bg-stone-900;
+}
+
+.background-focus-color{
+    @apply bg-stone-950;
+}
+
+.main-border{
+    @apply border-4 border-stone-800;
+}
+
+.contrast-text-color{
+    @apply text-amber-400;
+}
+
+.hover-change-color{
+    @apply hover:text-amber-400;
+}
+
+.base-text-color{
+    @apply text-stone-200;
+}
