@@ -8,6 +8,7 @@
     --color-mainbackgroundcolor: var(--color-stone-900);
     --color-focusbackgroundcolor: var(--color-stone-950);
     --color-bordercolor: var(--color-stone-800);
+    --shadow-profile: 0px 0px 20px var(--color-focusbackgroundcolor);
 }
 
 .main-border{
