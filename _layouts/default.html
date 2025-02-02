@@ -9,15 +9,15 @@
     <link rel="stylesheet" href="{{ "/assets/css/app.css" | relative_url }}">
 </head>
 
-<body class="background-color">
+<body class="bg-mainbackgroundcolor">
 
     <header class="pt-10 overflow-hidden">
-        <div class="mx-auto max-w-4xl rounded-lg background-focus-color main-border">
+        <div class="mx-auto max-w-4xl rounded-lg bg-focusbackgroundcolor main-border">
 
             <div class="flex flex-row">
                 <div class="flex flex-col p-2 pl-5 pt-6">
-                    <h1 class="text-4xl contrast-text-color">Agne Skripkaite</h1>
-                    <p class="text-lg base-text-color pt-3">on gamedev adventures!</p>
+                    <h1 class="text-4xl text-contrastcolor">Agne Skripkaite</h1>
+                    <p class="text-lg text-maintextcolor pt-3">on gamedev adventures!</p>
                 </div>
             </div>
 
@@ -26,7 +26,7 @@
         </div>
     </header>
 
-    <div class="mx-auto max-w-4xl p-2 pl-5 pt-6 text-base base-text-color pt-7">
+    <div class="mx-auto max-w-4xl p-2 pl-5 pt-6 text-base text-maintextcolor pt-7">
         {{ content }}
     </div>
 
