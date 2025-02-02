@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
-@theme inline{
+@theme inline {
+    --font-sans: "Atkinson Hyperlegible", serif;
     --color-contrastcolor: var(--color-amber-400);
-    --color-maintextcolor: var(--color-stone-200);
+    --color-maintextcolor: var(--color-stone-50);
     --color-mainbackgroundcolor: var(--color-stone-900);
     --color-focusbackgroundcolor: var(--color-stone-950);
     --color-bordercolor: var(--color-stone-800);
