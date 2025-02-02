@@ -26,3 +26,7 @@
 .paragraph{
     @apply text-xl text-maintextcolor pb-4;
 }
+
+.halfColumn{
+    @apply basis-6/12 min-w-72 p-8 grow;
+}
