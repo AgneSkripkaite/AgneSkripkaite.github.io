@@ -3,6 +3,7 @@
 @theme inline {
     --font-sans: "Atkinson Hyperlegible", serif;
     --color-contrastcolor: var(--color-amber-400);
+    --color-darktextcolor: var(--color-stone-600);
     --color-maintextcolor: var(--color-stone-400);
     --color-focustextcolor: var(--color-stone-50);
     --color-mainbackgroundcolor: var(--color-stone-900);
@@ -19,12 +20,16 @@
     @apply text-3xl text-focustextcolor;
 }
 
-.headingDivider{
+.heading-divider{
     @apply h-px mt-1 mb-8 bg-focustextcolor border-0;
 }
 
 .paragraph{
     @apply text-xl text-maintextcolor pb-4;
+}
+
+.footer-element{
+    @apply text-base text-darktextcolor;
 }
 
 .halfColumn{
