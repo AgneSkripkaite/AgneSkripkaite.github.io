@@ -5,6 +5,7 @@
     --color-contrastcolor: var(--color-amber-400);
     --color-darktextcolor: var(--color-stone-600);
     --color-maintextcolor: var(--color-stone-400);
+    --color-linktextcolor: var(--color-stone-300);
     --color-focustextcolor: var(--color-stone-50);
     --color-mainbackgroundcolor: var(--color-stone-900);
     --color-focusbackgroundcolor: var(--color-stone-950);
@@ -20,6 +21,10 @@
     @apply text-3xl text-focustextcolor;
 }
 
+.heading-spacer{
+    @apply mt-4;
+}
+
 .heading-divider{
     @apply h-px mt-1 mb-8 bg-focustextcolor border-0;
 }
@@ -28,10 +33,18 @@
     @apply text-xl text-maintextcolor pb-4;
 }
 
+.text-link{
+    @apply text-linktextcolor underline hover:text-focustextcolor;
+}
+
 .footer-element{
     @apply text-base text-darktextcolor;
 }
 
-.halfColumn{
+.half-column{
     @apply basis-6/12 min-w-72 p-2 sm:p-4 md:p-4 lg:p-8 grow;
+}
+
+.full-page-body{
+    @apply max-w-4xl place-self-center px-6;
 }
