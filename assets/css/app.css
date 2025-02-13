@@ -48,3 +48,7 @@
 .full-page-body{
     @apply max-w-4xl place-self-center px-6;
 }
+
+.note-body{
+    @apply max-w-4xl place-self-start px-6;
+}

@@ -7,13 +7,11 @@
 
     {% include header.html %}
 
-    <div class="m-4 text-xl text-maintextcolor justify-center">
-        <div class="flex flex-row flex-wrap items-center">
-            <div>
-                {% include notesNavigation.html %}
-            </div>
+    <div class="pl-4 text-xl text-maintextcolor justify-center">
+        <div class="flex flex-row flex-wrap">
+            {% include notesNavigation.html %}
             <div class="w-10"></div>
-            <div class="full-page-body">
+            <div class="note-body py-6">
                 {{ content }}  
             </div>
         </div>
