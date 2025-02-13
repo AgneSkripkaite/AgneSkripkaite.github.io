@@ -50,5 +50,5 @@
 }
 
 .note-body{
-    @apply max-w-4xl place-self-start px-6;
+    @apply w-full min-w-72 max-w-4xl px-6;
 }
