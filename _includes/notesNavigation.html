@@ -1,0 +1,9 @@
+<div class="pl-5 pr-5 pb-3 pt-3 rounded-lg bg-focusbackgroundcolor main-border shadow-main">
+    <nav>
+        <ul class="flex flex-col justify-left overflow-hidden text-xl text-maintextcolor">
+            {% for item in site.data.notesNavigation %}
+                <li class="flex-grow"><a href="{{ item.link }}" class="{% if page.url == item.link %} text-contrastcolor underline underline-offset-4 {% endif %} hover:text-focustextcolor">{{ item.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+</div>
