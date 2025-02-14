@@ -1,6 +1,6 @@
 - name: Home
   link: /
-- name: UENotes
-  link: /UENotes/
+- name: Notes
+  link: /Notes/
 - name: About
   link: /About.html
