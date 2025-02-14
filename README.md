@@ -1,6 +1,6 @@
 ## Agne's Personal Website
 
-Hi! This is the repo for my personal website. You're welcome to look and copy, but I have no web dev experience so things may be jank. You have been warned!
+Hi! This is the repo for my personal website. You're welcome to copy the setup but not content. Note that I have no web dev experience so things are likely very jank. You have been warned!
 
 ## Acknowledgements
 
