@@ -31,7 +31,11 @@
 }
 
 .paragraph{
-    @apply text-xl text-maintextcolor pb-4;
+    @apply text-xl text-maintextcolor;
+}
+
+.paragraph-spacer{
+    @apply mb-8;
 }
 
 .text-link{
@@ -59,7 +63,11 @@
 }
 
 .code-block{
-    @apply flex overflow-auto text-base mb-4;
+    @apply flex overflow-auto text-base pb-0.5 my-3;
+}
+
+.code-inline{
+    @apply px-1 bg-focusbackgroundcolor rounded-sm text-xl text-maintextcolor;
 }
 
 .scrollbar{
@@ -67,4 +75,8 @@
     [&::-webkit-scrollbar]:h-3
     [&::-webkit-scrollbar-track]:bg-stone-800
     [&::-webkit-scrollbar-thumb]:bg-stone-700;
+}
+
+.illustration{
+    @apply mx-auto p-2 rounded-lg shadow-main;
 }
