@@ -1,8 +1,17 @@
-<div class="pl-5 pr-5 pb-3 pt-3 rounded-lg bg-focusbackgroundcolor main-border shadow-main">
+<div class="flex-none pl-5 pr-5 pb-3 pt-3 rounded-lg bg-focusbackgroundcolor main-border shadow-main">
     <nav>
         <ul class="flex flex-col justify-left overflow-hidden text-xl text-maintextcolor">
             {% for item in site.data.notesNavigation %}
                 <li class="flex-grow"><a href="{{ item.link }}" class="{% if page.url == item.link %} text-contrastcolor underline underline-offset-4 {% endif %} hover:text-focustextcolor">{{ item.name }}</a></li>
+                {% if item.name == "Articles" %}
+                    <ul class="list-disc pl-7">
+                        {% for myPage in site.pages %}
+                            {% if myPage.url contains item.link and myPage.url != item.link %}
+                                <li><a href="{{ myPage.url }}" class="{% if page.url == myPage.url %} text-contrastcolor underline underline-offset-4 {% endif %} hover:text-focustextcolor">{{ myPage.title }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
             {% endfor %}
         </ul>
     </nav>
