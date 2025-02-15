@@ -38,6 +38,10 @@
     @apply text-linktextcolor underline hover:text-focustextcolor;
 }
 
+.timestamp{
+    @apply text-darktextcolor text-base;
+}
+
 .footer-element{
     @apply text-base text-darktextcolor;
 }
