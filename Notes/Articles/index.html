@@ -6,10 +6,14 @@ title: Articles
 <h1 class="heading1">All articles</h1>
 <hr class="heading-divider">
 
-<ul>
+<ul class="paragraph-spacer">
     {% for page in site.pages %}
         {% if page.categories contains "article" %}
             <li><a href="{{ page.url }}" class="text-link">{{ page.title }}</a></li>
         {% endif %}
     {% endfor %}
 </ul>
+
+<p class="paragraph">
+    Please check back later as I intend to be writing more soon!
+</p>

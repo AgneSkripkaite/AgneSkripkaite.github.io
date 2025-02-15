@@ -2,8 +2,9 @@
 layout: note
 title: The curious case of AActor function execution order
 categories: [article]
-dateWritten: 14 Feb 2025
+dateWritten: 15 Feb 2025
 engineVersionWritten: UE 5.5.3
+dateEdited: 15 Feb 2025
 ---
 
 <h1 class="heading1">The curious case of AActor function execution order</h1>
@@ -112,8 +113,12 @@ engineVersionWritten: UE 5.5.3
     <li><span class="code-inline">Destroyed()</span> → <span class="code-inline">ReceiveDestroyed()</span></li>
 </ul>
 
-<p class="paragraph">
+<p class="paragraph paragraph-spacer">
     If you comb through <span class="code-inline">Actor.h</span> you will notice over a dozen other <span class="code-inline">BlueprintImplementableEvent</span> functions that start with "Receive" and have user-facing names without it. However, they don't trick programmers into the same trap as their C++ counterparts also have different names.
+</p>
+
+<p class="paragraph paragraph-spacer">
+    EDIT: I haven't checked it for sure, but I suspect this article is also relevant for some functions in <span class="code-inline">ActorComponent</span> as well, notably <span class="code-inline">BeginPlay()</span> and <span class="code-inline">EndPlay()</span>.
 </p>
 
 <div class="mt-8">
