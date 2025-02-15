@@ -1,13 +1,21 @@
 ---
 layout: note
-title: UENotes
+title: Articles
 ---
-
-<h1 class="heading1">Articles</h1>
-<hr class="heading-divider">
 
 <p class="paragraph">* construction noises *</p>
 
 <p class="paragraph">
-    Aplogies! None of my articles are ready yet. Please check back later!
+    Apologies! None of my articles are ready yet. Please check back later!
 </p>
+
+<h1 class="heading1 heading-spacer">All articles</h1>
+<hr class="heading-divider">
+
+<ul>
+    {% for page in site.pages %}
+        {% if page.categories contains "article" %}
+            <li><a href="{{ page.url }}" class="text-link">{{ page.title }}</a></li>
+        {% endif %}
+    {% endfor %}
+</ul>
