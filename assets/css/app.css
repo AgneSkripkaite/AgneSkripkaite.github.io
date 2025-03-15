@@ -19,7 +19,11 @@
 }
 
 .heading1{
-    @apply text-3xl text-focustextcolor;
+    @apply text-4xl text-contrastcolor pt-4 pb-8;
+}
+
+.heading2{
+    @apply text-2xl text-focustextcolor;    
 }
 
 .heading-spacer{
@@ -59,7 +63,7 @@
 }
 
 .note-body{
-    @apply w-full min-w-72 max-w-4xl px-6;
+    @apply w-full min-w-72 max-w-4xl px-6 place-self-center;
 }
 
 .code-block{
@@ -79,4 +83,12 @@
 
 .illustration{
     @apply mx-auto p-2 rounded-lg shadow-main;
+}
+
+.section-nav{
+    @apply pl-8 pb-8;
+}
+
+.toc-entry{
+    @apply text-base text-darktextcolor hover:text-maintextcolor list-disc;
 }

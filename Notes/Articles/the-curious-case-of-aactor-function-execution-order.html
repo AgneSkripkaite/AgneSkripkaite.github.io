@@ -4,15 +4,19 @@ title: The curious case of AActor function execution order
 categories: [article]
 dateWritten: 15 Feb 2025
 engineVersionWritten: UE 5.5.3
-dateEdited: 15 Feb 2025
+dateEdited: 14 Mar 2025
+toc: true
 ---
 
-<h1 class="heading1">The curious case of AActor function execution order</h1>
+<h2 class="heading2" id="introduction">Introduction</h2>
 <hr class="heading-divider">
 
 <p class="paragraph paragraph-spacer">
     If you've ever paid close attention to <span class="code-inline">Actor</span> functions such as <span class="code-inline">BeginPlay()</span> in blueprints, you have likely noticed some interesting behavior when it comes to their interaction to their native parents. The key to the mysteries is that the <span class="code-inline">BeginPlay()</span> in blueprints is actually not an override of <span class="code-inline">BeginPlay()</span> in native!
 </p>
+
+<h2 class="heading2 heading-spacer" id="the-cause">The cause of the unexpected behavior</h2>
+<hr class="heading-divider">
 
 <p class="paragraph">
     One way to figure out what is going on is to create a C++ <span class="code-inline">Actor</span> class and observe that it comes with an override for <span class="code-inline">BeginPlay()</span> with the following comment above it:
@@ -54,8 +58,7 @@ dateEdited: 15 Feb 2025
 </div>    
 </div>
 
-
-<h1 class="heading1 heading-spacer">Why does this matter?</h1>
+<h2 class="heading2 heading-spacer" id="why-does-this-matter">Why does this matter?</h2>
 <hr class="heading-divider">
 
 <p class="paragraph paragraph-spacer">
@@ -99,7 +102,7 @@ dateEdited: 15 Feb 2025
 <p class="paragraph pb-3">
     Finally, you can still add a call to parent by right-clicking the event in blueprints and selecting <span class="code-inline">Add Call to Parent Function</span>; however, if the blueprint is a direct child of a native parent this call will do nothing as there is no parent implementation. If you inherit another blueprint class from the first one, you will see the call to parent is added automatically, since <span class="code-inline">ReceiveBeginPlay()</span> can now be meaningfully overriden.
 
-<h1 class="heading1 heading-spacer">List of functions with similar behavior</h1>
+<h2 class="heading2 heading-spacer" id="list-of-functions">List of functions with similar behavior</h2>
 <hr class="heading-divider">
 
 <p class="paragraph pb-3">
@@ -121,6 +124,6 @@ dateEdited: 15 Feb 2025
     EDIT: I haven't checked it for sure, but I suspect this article is also relevant for some functions in <span class="code-inline">ActorComponent</span> as well, notably <span class="code-inline">BeginPlay()</span> and <span class="code-inline">EndPlay()</span>.
 </p>
 
-<div class="mt-8">
+<div class="my-8">
     <a href="/Notes/Articles/" class="text-link pt-6">< Back to articles</a> 
 </div>

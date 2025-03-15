@@ -44,6 +44,9 @@ GEM
     jekyll-tailwind (2.1)
       jekyll (>= 3.0, < 5.0)
       tailwindcss-ruby
+    jekyll-toc (0.19.0)
+      jekyll (>= 3.9)
+      nokogiri (~> 1.12)
     jekyll-watch (2.2.1)
       listen (~> 3.0)
     kramdown (2.4.0)
@@ -166,6 +169,7 @@ DEPENDENCIES
   jekyll
   jekyll-heroicons
   jekyll-tailwind
+  jekyll-toc
   tailwindcss-ruby (>= 4)
   webrick
 
