@@ -63,7 +63,7 @@
 }
 
 .note-body{
-    @apply w-full min-w-72 max-w-4xl px-6;
+    @apply w-full min-w-72 max-w-4xl px-6 place-self-center;
 }
 
 .code-block{
