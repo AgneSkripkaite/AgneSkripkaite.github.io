@@ -5,6 +5,7 @@ title: "Agne Skripkaite" # the name of your site, e.g. ACME Corp.
 plugins:
   - jekyll-tailwind
   - jekyll-heroicons
+  - jekyll-toc
 
 tailwind:
   input: "assets/css/app.css"

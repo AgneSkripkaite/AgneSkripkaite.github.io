@@ -13,7 +13,8 @@
             <div class="flex-auto min-w-0 place-items-center py-6">
                 <div class="note-body">
                     {% include timestamps.html %}
-                    {{ content }}                      
+                    <h1 class="heading1">{{ page.title }}</h1>
+                    {{ content | toc }}                      
                 </div>   
             </div>
         </div>

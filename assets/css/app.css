@@ -19,7 +19,11 @@
 }
 
 .heading1{
-    @apply text-3xl text-focustextcolor;
+    @apply text-4xl text-contrastcolor pt-4 pb-8;
+}
+
+.heading2{
+    @apply text-2xl text-focustextcolor;    
 }
 
 .heading-spacer{
