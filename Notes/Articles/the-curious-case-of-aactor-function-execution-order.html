@@ -15,6 +15,9 @@ toc: true
     If you've ever paid close attention to <span class="code-inline">Actor</span> functions such as <span class="code-inline">BeginPlay()</span> in blueprints, you have likely noticed some interesting behavior when it comes to their interaction to their native parents. The key to the mysteries is that the <span class="code-inline">BeginPlay()</span> in blueprints is actually not an override of <span class="code-inline">BeginPlay()</span> in native!
 </p>
 
+<h2 class="heading2 heading-spacer" id="the-cause">The cause of the unexpected behavior</h2>
+<hr class="heading-divider">
+
 <p class="paragraph">
     One way to figure out what is going on is to create a C++ <span class="code-inline">Actor</span> class and observe that it comes with an override for <span class="code-inline">BeginPlay()</span> with the following comment above it:
 </p>
@@ -54,7 +57,6 @@ toc: true
     </code>
 </div>    
 </div>
-
 
 <h2 class="heading2 heading-spacer" id="why-does-this-matter">Why does this matter?</h2>
 <hr class="heading-divider">
@@ -100,7 +102,7 @@ toc: true
 <p class="paragraph pb-3">
     Finally, you can still add a call to parent by right-clicking the event in blueprints and selecting <span class="code-inline">Add Call to Parent Function</span>; however, if the blueprint is a direct child of a native parent this call will do nothing as there is no parent implementation. If you inherit another blueprint class from the first one, you will see the call to parent is added automatically, since <span class="code-inline">ReceiveBeginPlay()</span> can now be meaningfully overriden.
 
-<h2 class="heading2 heading-spacer" id="list-of-functions-with-similar-behavior">List of functions with similar behavior</h2>
+<h2 class="heading2 heading-spacer" id="list-of-functions">List of functions with similar behavior</h2>
 <hr class="heading-divider">
 
 <p class="paragraph pb-3">

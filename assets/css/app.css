@@ -84,3 +84,11 @@
 .illustration{
     @apply mx-auto p-2 rounded-lg shadow-main;
 }
+
+.section-nav{
+    @apply pl-8 pb-8;
+}
+
+.toc-entry{
+    @apply text-base text-darktextcolor hover:text-maintextcolor list-disc;
+}
