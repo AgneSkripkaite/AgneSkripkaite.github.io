@@ -4,7 +4,7 @@ title: The curious case of AActor function execution order
 categories: [article]
 dateWritten: 15 Feb 2025
 engineVersionWritten: UE 5.5.3
-dateEdited: 14 Mar 2025
+dateEdited: 15 Mar 2025
 toc: true
 ---
 
@@ -12,14 +12,25 @@ toc: true
 <hr class="heading-divider">
 
 <p class="paragraph paragraph-spacer">
-    If you've ever paid close attention to <span class="code-inline">Actor</span> functions such as <span class="code-inline">BeginPlay()</span> in blueprints, you have likely noticed some interesting behavior when it comes to their interaction to their native parents. The key to the mysteries is that the <span class="code-inline">BeginPlay()</span> in blueprints is actually not an override of <span class="code-inline">BeginPlay()</span> in native!
+    Overriding functions and calling their parent implementations are such fundamental concepts in inheritance that we hardly ever even think about them twice. And we definitely never anticipate any strange behavior!
 </p>
 
-<h2 class="heading2 heading-spacer" id="the-cause">The cause of the unexpected behavior</h2>
+<p class="paragraph pb-2">
+    Let's take a simple example: create a C++ <span class="code-inline">Actor</span> class and then inherit a blueprint class from it. Say, we override the <span class="code-inline">BeginPlay()</span> function in C++ to do something. And in the blueprint we may implement something like this:
+</p>
+<img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/begin-play-execution-order.png" | relative_url }}">
+<p class="paragraph">
+    Any reasonable developer would expect the execution order to be <span class="code-inline">First thing → Parent implementation → Second thing</span>. However, the actual execution order will most likely be <span class="code-inline">First thing → Second thing → Parent implementation</span> (though it could also be <span class="code-inline">Parent implementation → First thing → Second thing</span>). Or, if you forgot the call to <span class="code-inline">Super::BeginPlay()</span> in your native class, neither First thing nor Second thing would be executed. If you don't believe me, try it!
+</p>
+
+<h2 class="heading2 heading-spacer" id="begin-play-is-not-begin-play">BeginPlay() is... not BeginPlay()?!</h2>
 <hr class="heading-divider">
 
+<p class="paragraph paragraph-spacer">
+    The key is that the <span class="code-inline">BeginPlay()</span> in blueprints is actually not an override of <span class="code-inline">BeginPlay()</span> in native!
+</p>
 <p class="paragraph">
-    One way to figure out what is going on is to create a C++ <span class="code-inline">Actor</span> class and observe that it comes with an override for <span class="code-inline">BeginPlay()</span> with the following comment above it:
+    One way to see this for yourself is to observe that the <span class="code-inline">BeginPlay()</span> function in the native <span class="code-inline">Actor</span> class has the following comment above it:
 </p>
 <div class="code-block scrollbar">
     <code class="grow">
@@ -29,7 +40,7 @@ toc: true
     </code>
 </div>
 <p class="paragraph pb-2">
-    However, if you create a child blueprint class of this actor and hover over the <span class="code-inline">BeginPlay()</span> event, you will notice that the tool tip does not match:
+    However, in the child blueprint class of this actor, the <span class="code-inline">BeginPlay()</span> node has a similar but different tooltip:
 </p>
 <img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/begin-play-tooltip.png" | relative_url }}">
 
@@ -58,7 +69,7 @@ toc: true
 </div>    
 </div>
 
-<h2 class="heading2 heading-spacer" id="why-does-this-matter">Why does this matter?</h2>
+<h2 class="heading2 heading-spacer" id="what-this-means-in-practice">What this means in practice</h2>
 <hr class="heading-divider">
 
 <p class="paragraph paragraph-spacer">
@@ -100,7 +111,7 @@ toc: true
 </p>
 
 <p class="paragraph pb-3">
-    Finally, you can still add a call to parent by right-clicking the event in blueprints and selecting <span class="code-inline">Add Call to Parent Function</span>; however, if the blueprint is a direct child of a native parent this call will do nothing as there is no parent implementation. If you inherit another blueprint class from the first one, you will see the call to parent is added automatically, since <span class="code-inline">ReceiveBeginPlay()</span> can now be meaningfully overriden.
+    Finally, you can still add a call to parent by right-clicking the event in blueprints and selecting <span class="code-inline">Add Call to Parent Function</span>; however, if the blueprint is a direct child of a native parent this call will do nothing as there is no parent implementation. If you inherit another blueprint class from the first one, you will see the call to parent is added automatically, since <span class="code-inline">ReceiveBeginPlay()</span> can now be meaningfully overriden. But again, note that you will only be overriding the parent blueprint behavior, and none of the native parent behavior.
 
 <h2 class="heading2 heading-spacer" id="list-of-functions">List of functions with similar behavior</h2>
 <hr class="heading-divider">
@@ -121,7 +132,7 @@ toc: true
 </p>
 
 <p class="paragraph paragraph-spacer">
-    EDIT: I haven't checked it for sure, but I suspect this article is also relevant for some functions in <span class="code-inline">ActorComponent</span> as well, notably <span class="code-inline">BeginPlay()</span> and <span class="code-inline">EndPlay()</span>.
+    PS I haven't checked it for sure, but I suspect this article is also relevant for some functions in <span class="code-inline">ActorComponent</span> as well, notably <span class="code-inline">BeginPlay()</span> and <span class="code-inline">EndPlay()</span>.
 </p>
 
 <div class="my-8">
