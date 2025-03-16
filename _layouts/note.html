@@ -9,9 +9,21 @@
 
     <div class="pl-4 pr-4 text-xl text-maintextcolor justify-center">
         <div class="note-body">
+
             {% include timestamps.html %}
+
             <h1 class="heading1">{{ page.title }}</h1>
-            {{ content | toc }}                      
+
+            {{ content | toc }}
+
+            {% unless page.url == "/Notes/Articles/" %}
+                <div class="flex flex-row my-8">
+                    <a href="/Notes/Articles/" class="text-link pt-6">< Back to articles</a>
+                    <div class="flex flex-grow"></div>
+                    <a href="#top" class="text-link pt-6">^ Back to the top</a>
+                </div>
+            {% endunless %}
+
         </div>   
     </div>
 
