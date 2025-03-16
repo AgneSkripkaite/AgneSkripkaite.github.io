@@ -40,12 +40,28 @@ toc: true
 </div>
 
 <p class="paragraph paragraph-spacer">
-    Frustratingly, if "public" nodes accessing these protected members already exist in blueprints before the metadata specifier is added, those blueprints will continue compiling and running just fine and not log any errors.
+    Frustratingly, if "public" nodes accessing these protected members already exist in blueprints before the metadata specifier is added, those blueprints will continue compiling and running just fine and not log any errors when gleefully executing code they should not have access to.
 </p>
 
 <h3 class="heading3" id="determines-output-type">Determines output type</h3>
 
-<p class="paragraph paragraph-spacer">text here</p>
+<p class="paragraph">
+    Creating true wildcard pins in blueprint nodes is, unfortunately, not trivial. However, the <span class="code-inline">DeterminesOutputType</span> metadata specifier covers some of the cases. Here's how to use it:
+</p>
+
+<div class="code-block scrollbar">
+    <code class="grow">
+    {% highlight cpp linenos %}
+    UFUNCTION(BlueprintCallable, meta = (DeterminesOutputType = "ActorClass"))
+    static AActor* FindActorByClass(TSubclassOf<class AActor> ActorClass);    {% endhighlight %} 
+    </code>
+</div>
+
+<p class="paragraph paragraph-divider">
+    The above code will create the following nodes. Notice how the <span class="code-inline">ActorClass</span> input determines the type of the output:
+</p>
+
+<img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/find-actor-by-class.png" | relative_url }}">
 
 <h3 class="heading3" id="display-priority">Display priority</h3>
 
