@@ -90,4 +90,28 @@ toc: true
 
 <h3 class="heading3" id="world-context">World context</h3>
 
-<p class="paragraph paragraph-spacer">text here</p>
+<p class="paragraph paragraph-spacer">
+    The <span class="code-inline">WorldContext</span> specifier allows you to hide a world context input pin from the blueprint node if the calling object itself can be used as a world context object. For an object to be considered a valid substitute for the world context input pin it must override the <span class="code-inline">GetWorld()</span> function.
+</p>
+
+<p class="paragraph">
+    The principle for using this specifier is similar to other specifiers:
+</p>
+
+<div class="code-block scrollbar">
+    <code class="grow">
+    {% highlight cpp linenos %}
+    UFUNCTION(BlueprintCallable, meta = (WorldContext = "Context"))
+	static FString GetSomeStringFromWorld(UObject* Context);    {% endhighlight %} 
+    </code>
+</div>
+
+<p class="paragraph">
+    The two screenshots below show what the node for the function above will look like in an <span class="code-inline">Actor</span> blueprint and a blueprint function library blueprint, respectively:
+</p>
+
+<img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/world-context-pin.png" | relative_url }}">
+
+<p class="paragraph paragraph-spacer">
+    Note that this specifier will make the function inaccessible in subsystem blueprints! Though I wouldn't worry about it too much as blueprint subsystems, while possible, aren't that common.
+</p>
