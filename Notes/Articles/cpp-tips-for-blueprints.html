@@ -2,7 +2,7 @@
 layout: note
 title: C++ tips for blueprints
 categories: [article]
-dateWritten: 15 Feb 2025
+dateWritten: 16 Feb 2025
 engineVersionWritten: UE 5.5.3
 toc: true
 ---
@@ -11,7 +11,7 @@ toc: true
 <hr class="heading-divider">
 
 <p class="paragraph paragraph-spacer">
-    Blueprints are integral to many workflows in Unreal Engine, making interfacing between native and blueprints code a core skill to grow as a developer—especially when working in a team. This page lists tips and tricks I've found the most useful over the years, I hope they prove useful to you as well!
+    Blueprints are integral to many workflows in Unreal Engine, making interfacing between native and blueprints code a core skill to grow as a developer—especially when working in a team. This page lists tips and tricks I've found the useful over the years. I hope they prove handy to you as well!
 </p>
 
 <h2 class="heading2" id="metadata-specifiers">Metadata specifiers</h2>
@@ -115,3 +115,50 @@ toc: true
 <p class="paragraph paragraph-spacer">
     Note that this specifier will make the function inaccessible in subsystem blueprints! Though I wouldn't worry about it too much as blueprint subsystems, while possible, aren't that common.
 </p>
+
+<h2 class="heading2" id="getters-and-setters">Getters and setters</h2>
+<hr class="heading-divider">
+
+<p class="paragraph">
+    Sometimes blueprints try to be too helpful. If you've ever tried creating a protected parameter with a public getter and/or setter you may have noticed you end up with 2 getters and/or setters in blueprints. Here's a concrete example:
+</p>
+
+<div class="code-block scrollbar">
+    <code class="grow">
+    {% highlight cpp linenos %}
+    public:
+        UFUNCTION(BlueprintPure)
+        int32 GetMyValue() const { return MyValue; }
+
+        UFUNCTION(BlueprintCallable)
+        void SetMyValue(int32 InValue) { MyValue = InValue; }
+
+    protected:
+        UPROPERTY(blueprintReadWrite, meta = (BlueprintProtected))
+        int32 MyValue{ INDEX_NONE };    {% endhighlight %} 
+    </code>
+</div>
+
+<img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/double-getter-and-setter.png" | relative_url }}">
+
+<p class="paragraph">
+    Do not despair! One can specify the native getter and/or setter as the only getter and/or setter for blueprints like so:
+</p>
+
+<div class="code-block scrollbar">
+    <code class="grow">
+    {% highlight cpp linenos %}
+    public:
+        UFUNCTION(BlueprintPure, BlueprintGetter)
+        int32 GetMyValue() const { return MyValue; }
+
+        UFUNCTION(BlueprintCallable, BlueprintSetter)
+        void SetMyValue(int32 InValue) { MyValue = InValue; }
+
+    protected:
+        UPROPERTY(blueprintReadWrite, BlueprintGetter = GetMyValue, BlueprintSetter = SetMyValue, meta = (BlueprintProtected))
+        int32 MyValue{ INDEX_NONE };    {% endhighlight %} 
+    </code>
+</div>
+
+<img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/one-getter-and-setter.png" | relative_url }}">
