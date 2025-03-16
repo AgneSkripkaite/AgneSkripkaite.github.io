@@ -2,7 +2,7 @@
 layout: note
 title: C++ tips for blueprints
 categories: [article]
-dateWritten: 16 Feb 2025
+dateWritten: 16 Mar 2025
 engineVersionWritten: UE 5.5.3
 toc: true
 ---
@@ -162,3 +162,34 @@ toc: true
 </div>
 
 <img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/one-getter-and-setter.png" | relative_url }}">
+
+<h2 class="heading2" id="passing-by-reference">Passing by reference from blueprints to native</h2>
+<hr class="heading-divider">
+
+<p class="paragraph">
+    If you can pass by reference, you should do so in most cases. Unfortunately, any reference parameters are assumed to be outputs in blueprint nodes:
+</p>
+
+<div class="code-block scrollbar">
+    <code class="grow">
+    {% highlight cpp linenos %}
+    UFUNCTION(BlueprintCallable)
+	static void PopulateGivenString(FString& OutString);    {% endhighlight %} 
+    </code>
+</div>
+
+<img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/reference-output-pin.png" | relative_url }}">
+
+<p class="paragraph">
+    This limitation can be circumvented by marking the parameter as a <span class="code-inline">UPARAM(ref)</span>:
+</p>
+
+<div class="code-block scrollbar">
+    <code class="grow">
+    {% highlight cpp linenos %}
+    UFUNCTION(BlueprintCallable)
+	static void PopulateGivenString(UPARAM(ref) FString& OutString);    {% endhighlight %} 
+    </code>
+</div>
+
+<img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/reference-output-pin-2.png" | relative_url }}">
