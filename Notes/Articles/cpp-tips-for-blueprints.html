@@ -23,7 +23,25 @@ toc: true
 
 <h3 class="heading3" id="blueprint-protected">Blueprint protected</h3>
 
-<p class="paragraph paragraph-spacer">text here</p>
+<p class="paragraph">
+    Blueprints are full of unpleasant surprises for programmers. One of these surprises is that the <span class="code-inline">protected</span> access specifier is not honored automatically. You can fix it by using the <span class="code-inline">BlueprintProtected</span> metadata specifier for every protected <span class="code-inline">UFUNCTION</span> or <span class="code-inline">UPROPERTY</span> intended to be used in blueprints, like so:
+</p>
+
+<div class="code-block scrollbar">
+    <code class="grow">
+    {% highlight cpp linenos %}
+    protected:
+        UFUNCTION(BlueprintCallable, meta = (BlueprintProtected))
+	    void MyProtectedFunction();
+
+	    UPROPERTY(BlueprintReadWrite, meta = (BlueprintProtected))
+	    int32 MyProtectedInt{ INDEX_NONE };    {% endhighlight %} 
+    </code>
+</div>
+
+<p class="paragraph paragraph-spacer">
+    Frustratingly, if "public" nodes accessing these protected members already exist in blueprints before the metadata specifier is added, those blueprints will continue compiling and running just fine and not log any errors.
+</p>
 
 <h3 class="heading3" id="determines-output-type">Determines output type</h3>
 
