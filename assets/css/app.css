@@ -26,6 +26,10 @@
     @apply text-2xl text-focustextcolor;    
 }
 
+.heading3{
+    @apply text-xl uppercase text-focustextcolor pb-2;
+}
+
 .heading-spacer{
     @apply mt-4;
 }
@@ -91,4 +95,8 @@
 
 .toc-entry{
     @apply text-base text-darktextcolor hover:text-maintextcolor list-disc;
+}
+
+.toc-h3{
+    @apply ml-8;
 }

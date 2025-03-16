@@ -1,0 +1,195 @@
+---
+layout: note
+title: C++ tips for blueprints
+categories: [article]
+dateWritten: 16 Mar 2025
+engineVersionWritten: UE 5.5.3
+toc: true
+---
+
+<h2 class="heading2" id="introduction">Introduction</h2>
+<hr class="heading-divider">
+
+<p class="paragraph paragraph-spacer">
+    Blueprints are integral to many workflows in Unreal Engine, making interfacing between native and blueprints code a core skill to grow as a developer—especially when working in a team. This page lists tips and tricks I've found useful. I hope they prove handy to you as well!
+</p>
+
+<h2 class="heading2" id="metadata-specifiers">Metadata specifiers</h2>
+<hr class="heading-divider">
+
+<p class="paragraph paragraph-spacer">
+    Metadata specifiers can be applied to classes, structs, enums (and their values), functions, and properties. I will highlight a small handful of these below, though I highly recommend taking a look at the full list in the <a href="https://dev.epicgames.com/documentation/en-us/unreal-engine/metadata-specifiers-in-unreal-engine" class="text-link">official documentation on metadata specifiers</a>.
+</p>
+
+<h3 class="heading3" id="blueprint-protected">Blueprint protected</h3>
+
+<p class="paragraph">
+    Blueprints are full of unpleasant surprises for programmers. One of these surprises is that the <span class="code-inline">protected</span> access specifier is not honored automatically. You can fix it by using the <span class="code-inline">BlueprintProtected</span> metadata specifier for every protected <span class="code-inline">UFUNCTION</span> or <span class="code-inline">UPROPERTY</span> intended to be used in blueprints, like so:
+</p>
+
+<div class="code-block scrollbar">
+    <code class="grow">
+    {% highlight cpp linenos %}
+    protected:
+        UFUNCTION(BlueprintCallable, meta = (BlueprintProtected))
+	    void MyProtectedFunction();
+
+	    UPROPERTY(BlueprintReadWrite, meta = (BlueprintProtected))
+	    int32 MyProtectedInt{ INDEX_NONE };    {% endhighlight %} 
+    </code>
+</div>
+
+<p class="paragraph paragraph-spacer">
+    Frustratingly, if "public" nodes accessing these protected members already exist in blueprints before the metadata specifier is added, those blueprints will continue compiling and running just fine and not log any errors when gleefully executing code they should not have access to.
+</p>
+
+<h3 class="heading3" id="determines-output-type">Determines output type</h3>
+
+<p class="paragraph">
+    Creating true wildcard pins in blueprint nodes is, unfortunately, not trivial. However, the <span class="code-inline">DeterminesOutputType</span> metadata specifier covers some of the cases. Here's how to use it:
+</p>
+
+<div class="code-block scrollbar">
+    <code class="grow">
+    {% highlight cpp linenos %}
+    UFUNCTION(BlueprintCallable, meta = (DeterminesOutputType = "ActorClass"))
+    static AActor* FindActorByClass(TSubclassOf<class AActor> ActorClass);    {% endhighlight %} 
+    </code>
+</div>
+
+<p class="paragraph paragraph-divider">
+    The above code will create the following nodes. Notice how the <span class="code-inline">ActorClass</span> input determines the type of the output:
+</p>
+
+<img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/find-actor-by-class.png" | relative_url }}">
+
+<h3 class="heading3" id="display-priority">Display priority</h3>
+
+<p class="paragraph">
+    When defining variables to be set in blueprint's class defaults, it can be very handy to be able to control their order. One can do so by using the <span class="code-inline">DisplayPriority</span> specifier. Lower display priority number means higher priority and any variables without a priority specified will appear on the bottom.
+</p>
+
+<div class="code-block scrollbar">
+    <code class="grow">
+    {% highlight cpp linenos %}
+    UPROPERTY(EditAnywhere)
+	int32 MyParam;
+
+	UPROPERTY(EditAnywhere, meta = (DisplayPriority = 0))
+	int32 MyParam0;
+
+	UPROPERTY(EditAnywhere, meta = (DisplayPriority = 1))
+	int32 MyParam1;
+
+	UPROPERTY(EditAnywhere, meta = (DisplayPriority = -1))
+	int32 MyParamNeg1;    {% endhighlight %} 
+    </code>
+</div>
+
+<img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/variable-order.png" | relative_url }}">
+
+<h3 class="heading3" id="world-context">World context</h3>
+
+<p class="paragraph paragraph-spacer">
+    The <span class="code-inline">WorldContext</span> specifier allows you to hide a world context input pin from the blueprint node if the calling object itself can be used as a world context object. For an object to be considered a valid substitute for the world context input pin it must override the <span class="code-inline">GetWorld()</span> function.
+</p>
+
+<p class="paragraph">
+    The principle for using this specifier is similar to other specifiers:
+</p>
+
+<div class="code-block scrollbar">
+    <code class="grow">
+    {% highlight cpp linenos %}
+    UFUNCTION(BlueprintCallable, meta = (WorldContext = "Context"))
+	static FString GetSomeStringFromWorld(UObject* Context);    {% endhighlight %} 
+    </code>
+</div>
+
+<p class="paragraph">
+    The two screenshots below show what the node for the function above will look like in an <span class="code-inline">Actor</span> blueprint and a blueprint function library blueprint, respectively:
+</p>
+
+<img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/world-context-pin.png" | relative_url }}">
+
+<p class="paragraph paragraph-spacer">
+    Note that this specifier will make the function inaccessible in subsystem blueprints! Though I wouldn't worry about it too much as blueprint subsystems, while possible, aren't that common.
+</p>
+
+<h2 class="heading2" id="getters-and-setters">Getters and setters</h2>
+<hr class="heading-divider">
+
+<p class="paragraph">
+    Sometimes blueprints try to be too helpful. If you've ever created a protected variable with a public getter and/or setter you may have noticed you end up with 2 getters and/or setters in blueprints. Here's a concrete example:
+</p>
+
+<div class="code-block scrollbar">
+    <code class="grow">
+    {% highlight cpp linenos %}
+    public:
+        UFUNCTION(BlueprintPure)
+        int32 GetMyValue() const { return MyValue; }
+
+        UFUNCTION(BlueprintCallable)
+        void SetMyValue(int32 InValue) { MyValue = InValue; }
+
+    protected:
+        UPROPERTY(blueprintReadWrite, meta = (BlueprintProtected))
+        int32 MyValue{ INDEX_NONE };    {% endhighlight %} 
+    </code>
+</div>
+
+<img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/double-getter-and-setter.png" | relative_url }}">
+
+<p class="paragraph">
+    Do not despair! One can specify the native getter and/or setter as the only getter and/or setter for blueprints like so:
+</p>
+
+<div class="code-block scrollbar">
+    <code class="grow">
+    {% highlight cpp linenos %}
+    public:
+        UFUNCTION(BlueprintPure, BlueprintGetter)
+        int32 GetMyValue() const { return MyValue; }
+
+        UFUNCTION(BlueprintCallable, BlueprintSetter)
+        void SetMyValue(int32 InValue) { MyValue = InValue; }
+
+    protected:
+        UPROPERTY(blueprintReadWrite, BlueprintGetter = GetMyValue, BlueprintSetter = SetMyValue, meta = (BlueprintProtected))
+        int32 MyValue{ INDEX_NONE };    {% endhighlight %} 
+    </code>
+</div>
+
+<img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/one-getter-and-setter.png" | relative_url }}">
+
+<h2 class="heading2" id="passing-by-reference">Passing by reference from blueprints to native</h2>
+<hr class="heading-divider">
+
+<p class="paragraph">
+    If you can pass by reference, you should do so in most cases. Unfortunately, any reference parameters are assumed to be outputs in blueprint nodes:
+</p>
+
+<div class="code-block scrollbar">
+    <code class="grow">
+    {% highlight cpp linenos %}
+    UFUNCTION(BlueprintCallable)
+	static void PopulateGivenString(FString& OutString);    {% endhighlight %} 
+    </code>
+</div>
+
+<img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/reference-output-pin.png" | relative_url }}">
+
+<p class="paragraph">
+    This limitation can be circumvented by marking the parameter as a <span class="code-inline">UPARAM(ref)</span>:
+</p>
+
+<div class="code-block scrollbar">
+    <code class="grow">
+    {% highlight cpp linenos %}
+    UFUNCTION(BlueprintCallable)
+	static void PopulateGivenString(UPARAM(ref) FString& OutString);    {% endhighlight %} 
+    </code>
+</div>
+
+<img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/reference-output-pin-2.png" | relative_url }}">
