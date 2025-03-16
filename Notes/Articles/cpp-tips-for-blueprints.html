@@ -66,7 +66,7 @@ toc: true
 <h3 class="heading3" id="display-priority">Display priority</h3>
 
 <p class="paragraph">
-    When defining parameters to be set in blueprint's class defaults, it can be very handy to be able to control their order. One can do so by using the <span class="code-inline">DisplayPriority</span> specifier. Lower display priority number means higher priority and any parameters without a priority specified will appear on the bottom.
+    When defining variables to be set in blueprint's class defaults, it can be very handy to be able to control their order. One can do so by using the <span class="code-inline">DisplayPriority</span> specifier. Lower display priority number means higher priority and any variables without a priority specified will appear on the bottom.
 </p>
 
 <div class="code-block scrollbar">
@@ -86,7 +86,7 @@ toc: true
     </code>
 </div>
 
-<img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/parameter-order.png" | relative_url }}">
+<img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/variable-order.png" | relative_url }}">
 
 <h3 class="heading3" id="world-context">World context</h3>
 
@@ -120,7 +120,7 @@ toc: true
 <hr class="heading-divider">
 
 <p class="paragraph">
-    Sometimes blueprints try to be too helpful. If you've ever tried creating a protected parameter with a public getter and/or setter you may have noticed you end up with 2 getters and/or setters in blueprints. Here's a concrete example:
+    Sometimes blueprints try to be too helpful. If you've ever created a protected variable with a public getter and/or setter you may have noticed you end up with 2 getters and/or setters in blueprints. Here's a concrete example:
 </p>
 
 <div class="code-block scrollbar">
