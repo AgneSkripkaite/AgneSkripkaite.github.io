@@ -65,7 +65,28 @@ toc: true
 
 <h3 class="heading3" id="display-priority">Display priority</h3>
 
-<p class="paragraph paragraph-spacer">text here</p>
+<p class="paragraph">
+    When defining parameters to be set in blueprint's class defaults, it can be very handy to be able to control their order. One can do so by using the <span class="code-inline">DisplayPriority</span> specifier. Lower display priority number means higher priority and any parameters without a priority specified will appear on the bottom.
+</p>
+
+<div class="code-block scrollbar">
+    <code class="grow">
+    {% highlight cpp linenos %}
+    UPROPERTY(EditAnywhere)
+	int32 MyParam;
+
+	UPROPERTY(EditAnywhere, meta = (DisplayPriority = 0))
+	int32 MyParam0;
+
+	UPROPERTY(EditAnywhere, meta = (DisplayPriority = 1))
+	int32 MyParam1;
+
+	UPROPERTY(EditAnywhere, meta = (DisplayPriority = -1))
+	int32 MyParamNeg1;    {% endhighlight %} 
+    </code>
+</div>
+
+<img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/parameter-order.png" | relative_url }}">
 
 <h3 class="heading3" id="world-context">World context</h3>
 
