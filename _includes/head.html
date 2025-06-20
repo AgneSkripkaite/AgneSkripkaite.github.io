@@ -6,5 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='12 0 100 100'><text y='.9em' font-size='90'>🙃</text></svg>" />
     <title>{{ page.title }} - {{ site.title }}</title>
+    <meta name="title" property="og:title" content="{{ page.title }}">
+    <meta property="og:image" content="{% if page.openGraphImage %}{{ page.openGraphImage }}{% else %}https://agneskripkaite.github.io/assets/images/opengraph/main.png{% endif %}" />
+    <meta property="og:type" content="{% if page.categories contains "article" %}article{% else %}website{% endif %}">
+    <meta property="og:description" content="{% if page.description %}{{ page.description }}{% else %}Tips, tricks, and mad ravings from Unreal gamedev adventures!{% endif %}">
     <link rel="stylesheet" href="{{ "/assets/css/app.css" | relative_url }}">
 </head>
