@@ -50,6 +50,14 @@
     @apply text-linktextcolor underline hover:text-focustextcolor;
 }
 
+.article-card-heading{
+    @apply text-2xl text-contrastcolor pb-2;
+}
+
+.article-card-text{
+    @apply text-lg text-maintextcolor;
+}
+
 .timestamp{
     @apply text-darktextcolor text-base;
 }
