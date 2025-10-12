@@ -1,105 +1,27 @@
 ---
 layout: note
-title: Recommended resources
+title: Blogroll
 dateWritten: 13 Feb 2025
-dateEdited: 21 Aug 2025
+dateEdited: 12 Oct 2025
 toc: true
 ---
 
 <p class="paragraph">
-  Here's a list of resources I've found the most useful over the years. Hope you
-  find something new!
+  Here's a list of resources I've found useful and/or entertaining over the
+  years. Hope you find something new here!
 </p>
 
-<h2 class="heading2 heading-spacer">General Unreal Engine</h2>
+{% for item in site.data.blogrollCategories %}
+<h2 class="heading2 heading-spacer">{{ item.name }}</h2>
 <hr class="heading-divider" />
-
-<p class="paragraph paragraph-spacer">
-  <a
-    href="https://www.linkedin.com/in/oprea-alexandru/recent-activity/articles/"
-    class="text-link"
-    >Alexandru Oprea's LinkedIn</a
-  >—occasionally posts bite-sized nerdy tips: always fun and practical!
-</p>
-
-<p class="paragraph paragraph-spacer">
-  <a
-    href="https://flassari.notion.site/Ari-s-Unreal-Engine-Notes-1a75e43f4014464984d4fae0617e5cef"
-    class="text-link"
-    >Ari Arnbjörnsson's Unreal Engine notes</a
-  >—eclectic yet extremely useful collection of odds and ends. Highlights
-  include best practices and practical debugging tips.
-</p>
-
-<p class="paragraph paragraph-spacer">
-  <a href="https://benui.ca/" class="text-link">Ben UI website</a>—a treasure
-  trove of Unreal Engine articles, documentation, and code snippets across
-  various topics. UI is a big focus but there's a lot more than that in there.
-</p>
-
-<p class="paragraph paragraph-spacer">
-  <a href="https://www.tomlooman.com/?post_type=post" class="text-link"
-    >Tom Looman's articles</a
-  >—these are all highly practical and of very high quality.
-</p>
-
-<p class="paragraph paragraph-spacer">
-  <a href="https://www.youtube.com/@PrismaticaDev/videos" class="text-link"
-    >PrismaticaDev YouTube channel</a
-  >—want some fantastic, easily digestible tech art content? Look no further.
-</p>
-
-<h2 class="heading2 heading-spacer">Smaller Unreal Engine pieces by topic</h2>
-<hr class="heading-divider" />
-
-<p class="paragraph paragraph-spacer">
-  <a
-    href="https://www.unrealengine.com/en-US/blog/optimizing-tarray-usage-for-performance"
-    class="text-link"
-    >Optimizing TArray Usage for Performance</a
-  >
-  by Zak Middleton—even if you don't need to squeeze out every tiny bit of
-  performance out of your arrays (and in most cases you really do not!) this
-  will help you understand what's going on under the hood a lot deeper.
-</p>
-
-<p class="paragraph paragraph-spacer">
-  <a
-    href="https://prosser.io/optimizing-tweakobjectptr-usage/"
-    class="text-link"
-    >Optimizing TWeakObjectPtr usage</a
-  >
-  by George Prosser—if you're not using TWeakObjectPtr's you really should
-  start! And this article will give you practical advice on how to do it best.
-</p>
-
-<p class="paragraph paragraph-spacer">
-  <a
-    href="https://www.stevestreeting.com/2020/11/02/ue4-c-interfaces-hints-n-tips/"
-    class="text-link"
-    >UE4 C++ Interfaces - Hints n Tips</a
-  >
-  by Steve Streeting—most extensive writeup of interfaces I've seen. While I
-  haven't tested some of the last few points in new engine versions, the basic
-  facts seem solid still.
-</p>
-
-<p class="paragraph paragraph-spacer">
-  <a
-    href="https://loadbearingtomato.com/p/reading-csv-files-in-ue5-c"
-    class="text-link"
-    >Reading CSV files in UE5 C++</a
-  >
-  by Christina Pollock—because the easiest to find guide on this is likely not
-  gonna work.
-</p>
-
-<h2 class="heading2 heading-spacer">Inspirational</h2>
-<hr class="heading-divider" />
-
-<p class="paragraph paragraph-spacer">
-  <a href="https://www.youtube.com/watch?v=l9NX06mvp2E" class="text-link"
-    >Creating the Art of ABZU, YouTube video</a
-  >—demonstrates how clever shaders can replace expensive animations with
-  gorgeous, performant results. Blew my entire mind the first time I saw it.
-</p>
+{% assign category_resources = site.blogroll | where: "category", item.name %}
+{% for resource in category_resources %}
+<div
+  class="flex flex-col items-left rounded-lg bg-mainbackgroundcolor main-border shadow-main hover:bg-focusbackgroundcolor m-2"
+>
+  <a href="{{ resource.link }}" class="px-6 py-6">
+    <p class="article-card-heading">{{ resource.name }}</p>
+    <p class="article-card-text">{{ resource.content }}</p>
+  </a>
+</div>
+{% endfor %}{% endfor %}
