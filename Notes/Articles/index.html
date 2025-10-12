@@ -2,20 +2,20 @@
 layout: default
 title: All Articles
 ---
+
 <div class="grid grid-cols-1 md:grid-cols-2">
-    {% for page in site.pages %}
-        {% if page.categories contains "article" %}
-            <div class="flex flex-col items-center md:flex-row md:max-w-xl rounded-lg bg-mainbackgroundcolor main-border shadow-main hover:bg-focusbackgroundcolor m-2">
-                <a href="{{ page.url }}" class="px-6 py-6">
-                    <h1 class="article-card-heading">{{ page.title }}</h1>
-                    <p class="article-card-text">{{ page.description }}</p>
-                </a>   
-            </div> 
-        {% endif %}
-    {% endfor %}
+  {% for page in site.pages %} {% if page.categories contains "article" %}
+  <div
+    class="flex flex-col items-center md:flex-row md:max-w-xl rounded-lg bg-mainbackgroundcolor main-border shadow-main hover:bg-focusbackgroundcolor m-2"
+  >
+    <a href="{{ page.url }}" class="px-6 py-6">
+      <h1 class="article-card-heading">{{ page.title }}</h1>
+      <p class="article-card-text">{{ page.description }}</p>
+    </a>
+  </div>
+  {% endif %} {% endfor %}
 </div>
 
-
 <p class="paragraph paragraph-spacer mt-8">
-    Please check back later as I intend to be writing more soon!
+  Please check back later as I intend to be writing more soon!
 </p>
