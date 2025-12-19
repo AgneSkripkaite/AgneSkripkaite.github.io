@@ -7,132 +7,207 @@ openGraphImage: "https://agneskripkaite.github.io/assets/images/opengraph/beginP
 dateWritten: 15 Feb 2025
 engineVersionWritten: UE 5.5.3
 dateEdited: 15 Mar 2025
+sortDate: 2025-02-15
 toc: true
 ---
 
 <h2 class="heading2" id="introduction">Introduction</h2>
-<hr class="heading-divider">
+<hr class="heading-divider" />
 
 <p class="paragraph paragraph-spacer">
-    Overriding functions and calling their parent implementations are such fundamental concepts in inheritance that we hardly ever even think about them twice. And we definitely never anticipate any strange behavior!
+  Overriding functions and calling their parent implementations are such
+  fundamental concepts in inheritance that we hardly ever even think about them
+  twice. And we definitely never anticipate any strange behavior!
 </p>
 
 <p class="paragraph pb-2">
-    Let's take a simple example: create a C++ <span class="code-inline">Actor</span> class and then inherit a blueprint class from it. Say, we override the <span class="code-inline">BeginPlay()</span> function in C++ to do something. And in the blueprint we may implement something like this:
+  Let's take a simple example: create a C++
+  <span class="code-inline">Actor</span> class and then inherit a blueprint
+  class from it. Say, we override the
+  <span class="code-inline">BeginPlay()</span> function in C++ to do something.
+  And in the blueprint we may implement something like this:
 </p>
-<img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/begin-play-execution-order.png" | relative_url }}">
+<img class="illustration paragraph-spacer" src="{{
+"/assets/images/blueprint/begin-play-execution-order.png" | relative_url }}">
 <p class="paragraph">
-    Any reasonable developer would expect the execution order to be <span class="code-inline">First thing → Parent implementation → Second thing</span>. However, the actual execution order will most likely be <span class="code-inline">First thing → Second thing → Parent implementation</span> (though it could also be <span class="code-inline">Parent implementation → First thing → Second thing</span>). Or, if you forgot the call to <span class="code-inline">Super::BeginPlay()</span> in your native class, neither First thing nor Second thing would be executed. If you don't believe me, try it!
+  Any reasonable developer would expect the execution order to be
+  <span class="code-inline"
+    >First thing → Parent implementation → Second thing</span
+  >. However, the actual execution order will most likely be
+  <span class="code-inline"
+    >First thing → Second thing → Parent implementation</span
+  >
+  (though it could also be
+  <span class="code-inline"
+    >Parent implementation → First thing → Second thing</span
+  >). Or, if you forgot the call to
+  <span class="code-inline">Super::BeginPlay()</span> in your native class,
+  neither First thing nor Second thing would be executed. If you don't believe
+  me, try it!
 </p>
 
-<h2 class="heading2 heading-spacer" id="begin-play-is-not-begin-play">BeginPlay() is... not BeginPlay()?!</h2>
-<hr class="heading-divider">
+<h2 class="heading2 heading-spacer" id="begin-play-is-not-begin-play">
+  BeginPlay() is... not BeginPlay()?!
+</h2>
+<hr class="heading-divider" />
 
 <p class="paragraph paragraph-spacer">
-    The key is that the <span class="code-inline">BeginPlay()</span> in blueprints is actually not an override of <span class="code-inline">BeginPlay()</span> in native!
+  The key is that the <span class="code-inline">BeginPlay()</span> in blueprints
+  is actually not an override of <span class="code-inline">BeginPlay()</span> in
+  native!
 </p>
 <p class="paragraph">
-    One way to see this for yourself is to observe that the <span class="code-inline">BeginPlay()</span> function in the native <span class="code-inline">Actor</span> class has the following comment above it:
+  One way to see this for yourself is to observe that the
+  <span class="code-inline">BeginPlay()</span> function in the native
+  <span class="code-inline">Actor</span> class has the following comment above
+  it:
 </p>
 <div class="code-block scrollbar">
-    <code class="grow">
-    {% highlight cpp linenos %}
-    // Called when the game starts or when spawned
-    virtual void BeginPlay() override;    {% endhighlight %} 
-    </code>
+  <code class="grow">
+    {% highlight cpp linenos %} // Called when the game starts or when spawned
+    virtual void BeginPlay() override; {% endhighlight %}
+  </code>
 </div>
 <p class="paragraph pb-2">
-    However, in the child blueprint class of this actor, the <span class="code-inline">BeginPlay()</span> node has a similar but different tooltip:
+  However, in the child blueprint class of this actor, the
+  <span class="code-inline">BeginPlay()</span> node has a similar but different
+  tooltip:
 </p>
-<img class="illustration paragraph-spacer" src="{{ "/assets/images/blueprint/begin-play-tooltip.png" | relative_url }}">
+<img class="illustration paragraph-spacer" src="{{
+"/assets/images/blueprint/begin-play-tooltip.png" | relative_url }}">
 
 <p class="paragraph">
-    Where does this text come from? Through the wonders of modern technology we can search the tool tip text in our IDE of choice and find out that the function in blueprints is actually <span class="code-inline">ReceiveBeginPlay()</span> defined in <span class="code-inline">Actor.h</span>:
+  Where does this text come from? Through the wonders of modern technology we
+  can search the tool tip text in our IDE of choice and find out that the
+  function in blueprints is actually
+  <span class="code-inline">ReceiveBeginPlay()</span> defined in
+  <span class="code-inline">Actor.h</span>:
 </p>
 <div class="code-block scrollbar paragraph-spacer">
-    <code class="grow">
-    {% highlight cpp linenos %}
-    /** Event when play begins for this actor. */
+  <code class="grow">
+    {% highlight cpp linenos %} /** Event when play begins for this actor. */
     UFUNCTION(BlueprintImplementableEvent, meta=(DisplayName = "BeginPlay"))
-    ENGINE_API void ReceiveBeginPlay();    {% endhighlight %} 
-    </code>
+    ENGINE_API void ReceiveBeginPlay(); {% endhighlight %}
+  </code>
 </div>
 
 <p class="paragraph">
-    This function is called inside the normal <span class="code-inline">AActor::BeginPlay()</span> just before setting the actor as <span class="code-inline">HasBegunPlay</span>:
+  This function is called inside the normal
+  <span class="code-inline">AActor::BeginPlay()</span> just before setting the
+  actor as <span class="code-inline">HasBegunPlay</span>:
 </p>
 <div class="paragraph-spacer">
-<div class="code-block scrollbar">
+  <div class="code-block scrollbar">
     <code class="grow">
-    {% highlight cpp linenos %}
-    ReceiveBeginPlay();
-    ActorHasBegunPlay = EActorBeginPlayState::HasBegunPlay;    {% endhighlight %} 
+      {% highlight cpp linenos %} ReceiveBeginPlay(); ActorHasBegunPlay =
+      EActorBeginPlayState::HasBegunPlay; {% endhighlight %}
     </code>
-</div>    
+  </div>
 </div>
 
-<h2 class="heading2 heading-spacer" id="what-this-means-in-practice">What this means in practice</h2>
-<hr class="heading-divider">
+<h2 class="heading2 heading-spacer" id="what-this-means-in-practice">
+  What this means in practice
+</h2>
+<hr class="heading-divider" />
 
 <p class="paragraph paragraph-spacer">
-    At first glance one would expect the blueprint implementation of <span class="code-inline">BeginPlay()</span> to override the native parent implementation. However, we now know that is impossible as they are two different functions. If your design requires a way to override native functionality you will have to create a custom function and use that in blueprints instead.
+  At first glance one would expect the blueprint implementation of
+  <span class="code-inline">BeginPlay()</span> to override the native parent
+  implementation. However, we now know that is impossible as they are two
+  different functions. If your design requires a way to override native
+  functionality you will have to create a custom function and use that in
+  blueprints instead.
 </p>
 
 <p class="paragraph">
-    This also means that one can control the order in which the code is executed by being mindful of where the call to super is placed in the native implementation. To illustrate this point, the following code
+  This also means that one can control the order in which the code is executed
+  by being mindful of where the call to super is placed in the native
+  implementation. To illustrate this point, the following code
 </p>
 <div class="code-block scrollbar">
-    <code class="grow">
-    {% highlight cpp linenos %}
-    void AWActor::BeginPlay()
-    {
-        UE_LOG(LogTemp, Log, TEXT("%s() in native before Super::BeginPlay()!"),
-            ANSI_TO_TCHAR(__FUNCTION__));
-
-        Super::BeginPlay();
-
-        UE_LOG(LogTemp, Log, TEXT("%s() in native after Super::BeginPlay()!"),
-            ANSI_TO_TCHAR(__FUNCTION__));
-    }    {% endhighlight %} 
-    </code>
+  <code class="grow">
+    {% highlight cpp linenos %} void AWActor::BeginPlay() { UE_LOG(LogTemp, Log,
+    TEXT("%s() in native before Super::BeginPlay()!"),
+    ANSI_TO_TCHAR(__FUNCTION__)); Super::BeginPlay(); UE_LOG(LogTemp, Log,
+    TEXT("%s() in native after Super::BeginPlay()!"),
+    ANSI_TO_TCHAR(__FUNCTION__)); } {% endhighlight %}
+  </code>
 </div>
 <p class="paragraph">
-    with a print string on <span class="code-inline">BeginPlay()</span> in a child blueprint yields the following log output:
+  with a print string on <span class="code-inline">BeginPlay()</span> in a child
+  blueprint yields the following log output:
 </p>
 <div class="code-block scrollbar">
-    <code class="grow">
-    {% highlight plaintext linenos %}
-    LogTemp: AWActor::BeginPlay() in native before Super::BeginPlay()!
-    LogBlueprintUserMessages: [B_WActor_C_UAID_7085C2B5FE9B684C02_1813221055] Event BeginPlay in blueprint  
-    LogTemp: AWActor::BeginPlay() in native after Super::BeginPlay()!    {% endhighlight %} 
-    </code>
+  <code class="grow">
+    {% highlight plaintext linenos %} LogTemp: AWActor::BeginPlay() in native
+    before Super::BeginPlay()! LogBlueprintUserMessages:
+    [B_WActor_C_UAID_7085C2B5FE9B684C02_1813221055] Event BeginPlay in blueprint
+    LogTemp: AWActor::BeginPlay() in native after Super::BeginPlay()! {%
+    endhighlight %}
+  </code>
 </div>
 
 <p class="paragraph paragraph-spacer">
-    Note that without the call to super, the blueprint function will not execute at all!
+  Note that without the call to super, the blueprint function will not execute
+  at all!
 </p>
 
 <p class="paragraph pb-3">
-    Finally, you can still add a call to parent by right-clicking the event in blueprints and selecting <span class="code-inline">Add Call to Parent Function</span>; however, if the blueprint is a direct child of a native parent this call will do nothing as there is no parent implementation. If you inherit another blueprint class from the first one, you will see the call to parent is added automatically, since <span class="code-inline">ReceiveBeginPlay()</span> can now be meaningfully overriden. But again, note that you will only be overriding the parent blueprint behavior, and none of the native parent behavior.
+  Finally, you can still add a call to parent by right-clicking the event in
+  blueprints and selecting
+  <span class="code-inline">Add Call to Parent Function</span>; however, if the
+  blueprint is a direct child of a native parent this call will do nothing as
+  there is no parent implementation. If you inherit another blueprint class from
+  the first one, you will see the call to parent is added automatically, since
+  <span class="code-inline">ReceiveBeginPlay()</span> can now be meaningfully
+  overriden. But again, note that you will only be overriding the parent
+  blueprint behavior, and none of the native parent behavior.
+</p>
 
-<h2 class="heading2 heading-spacer" id="list-of-functions">List of functions with similar behavior</h2>
-<hr class="heading-divider">
+<h2 class="heading2 heading-spacer" id="list-of-functions">
+  List of functions with similar behavior
+</h2>
+<hr class="heading-divider" />
 
 <p class="paragraph pb-3">
-    Above, I only talk about <span class="code-inline">BeginPlay()</span> to keep the explanation simpler. However, it isn't the only <span class="code-inline">Actor</span> function likely to cause headaches and bugs if one doesn't anticipate the blueprint and native functions to not match up. Here's a (hopefully) complete list of these rascals:
+  Above, I only talk about <span class="code-inline">BeginPlay()</span> to keep
+  the explanation simpler. However, it isn't the only
+  <span class="code-inline">Actor</span> function likely to cause headaches and
+  bugs if one doesn't anticipate the blueprint and native functions to not match
+  up. Here's a (hopefully) complete list of these rascals:
 </p>
 
 <ul class="list-disc ml-7 paragraph-spacer">
-    <li><span class="code-inline">BeginPlay()</span> → <span class="code-inline">ReceiveBeginPlay()</span></li>
-    <li><span class="code-inline">EndPlay()</span> → <span class="code-inline">ReceiveEndPlay()</span></li>
-    <li><span class="code-inline">Tick()</span> → <span class="code-inline">ReceiveTick()</span></li>
-    <li><span class="code-inline">Destroyed()</span> → <span class="code-inline">ReceiveDestroyed()</span></li>
+  <li>
+    <span class="code-inline">BeginPlay()</span> →
+    <span class="code-inline">ReceiveBeginPlay()</span>
+  </li>
+  <li>
+    <span class="code-inline">EndPlay()</span> →
+    <span class="code-inline">ReceiveEndPlay()</span>
+  </li>
+  <li>
+    <span class="code-inline">Tick()</span> →
+    <span class="code-inline">ReceiveTick()</span>
+  </li>
+  <li>
+    <span class="code-inline">Destroyed()</span> →
+    <span class="code-inline">ReceiveDestroyed()</span>
+  </li>
 </ul>
 
 <p class="paragraph paragraph-spacer">
-    If you comb through <span class="code-inline">Actor.h</span> you will notice over a dozen other <span class="code-inline">BlueprintImplementableEvent</span> functions that start with "Receive" and have user-facing names without it. However, they don't trick programmers into the same trap as their C++ counterparts also have different names.
+  If you comb through <span class="code-inline">Actor.h</span> you will notice
+  over a dozen other
+  <span class="code-inline">BlueprintImplementableEvent</span> functions that
+  start with "Receive" and have user-facing names without it. However, they
+  don't trick programmers into the same trap as their C++ counterparts also have
+  different names.
 </p>
 
 <p class="paragraph paragraph-spacer">
-    PS I haven't checked it for sure, but I suspect this article is also relevant for some functions in <span class="code-inline">ActorComponent</span> as well, notably <span class="code-inline">BeginPlay()</span> and <span class="code-inline">EndPlay()</span>.
+  PS I haven't checked it for sure, but I suspect this article is also relevant
+  for some functions in <span class="code-inline">ActorComponent</span> as well,
+  notably <span class="code-inline">BeginPlay()</span> and
+  <span class="code-inline">EndPlay()</span>.
 </p>
